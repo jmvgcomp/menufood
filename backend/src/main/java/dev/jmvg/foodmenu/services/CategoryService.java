@@ -1,10 +1,13 @@
 package dev.jmvg.foodmenu.services;
 
 import dev.jmvg.dto.CategoryDTO;
+import dev.jmvg.exceptions.DatabaseIntegrityException;
 import dev.jmvg.exceptions.ResourceNotFoundException;
 import dev.jmvg.foodmenu.entities.Category;
 import dev.jmvg.foodmenu.repositories.CategoryRepository;
 import org.springframework.beans.BeanUtils;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,6 +57,17 @@ public class CategoryService {
             return new CategoryDTO(category);
         }catch (EntityNotFoundException e){
             throw new ResourceNotFoundException("Id not found " + id);
+        }
+
+    }
+
+    public void delete(Long id) {
+        try {
+            categoryRepository.deleteById(id);
+        }catch (EmptyResultDataAccessException e){
+            throw new ResourceNotFoundException("Id not found "+ id);
+        }catch (DataIntegrityViolationException e){
+            throw new DatabaseIntegrityException("Integrity violation");
         }
 
     }
