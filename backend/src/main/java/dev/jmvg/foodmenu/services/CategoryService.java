@@ -1,12 +1,14 @@
 package dev.jmvg.foodmenu.services;
 
 import dev.jmvg.dto.CategoryDTO;
+import dev.jmvg.exceptions.EntityNotFoundException;
 import dev.jmvg.foodmenu.entities.Category;
 import dev.jmvg.foodmenu.repositories.CategoryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +27,13 @@ public class CategoryService {
                             .collect(Collectors.toList());
 
 
+    }
+
+    @Transactional(readOnly = true)
+    public CategoryDTO findById(Long id){
+        Category obj = categoryRepository.findById(id)
+                        .orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+        return new CategoryDTO(obj);
     }
 
 }
