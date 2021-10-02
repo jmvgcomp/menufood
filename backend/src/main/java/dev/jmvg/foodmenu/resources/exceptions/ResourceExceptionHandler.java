@@ -1,6 +1,6 @@
 package dev.jmvg.foodmenu.resources.exceptions;
 
-import dev.jmvg.exceptions.EntityNotFoundException;
+import dev.jmvg.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,8 +12,8 @@ import java.time.Instant;
 @ControllerAdvice
 public class ResourceExceptionHandler {
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<StandardError> entityNotFoundExceptionHandler(EntityNotFoundException e, HttpServletRequest request){
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<StandardError> entityNotFoundExceptionHandler(ResourceNotFoundException e, HttpServletRequest request){
         StandardError error = new StandardError();
         error.setTimestamp(Instant.now());
         error.setStatus(HttpStatus.NOT_FOUND.value());

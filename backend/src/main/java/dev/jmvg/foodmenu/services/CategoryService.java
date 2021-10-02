@@ -1,14 +1,15 @@
 package dev.jmvg.foodmenu.services;
 
 import dev.jmvg.dto.CategoryDTO;
-import dev.jmvg.exceptions.EntityNotFoundException;
+import dev.jmvg.exceptions.ResourceNotFoundException;
 import dev.jmvg.foodmenu.entities.Category;
 import dev.jmvg.foodmenu.repositories.CategoryRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,8 +33,28 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public CategoryDTO findById(Long id){
         Category obj = categoryRepository.findById(id)
-                        .orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+                        .orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
         return new CategoryDTO(obj);
     }
 
+    @Transactional
+    public CategoryDTO save(CategoryDTO categoryDTO) {
+        Category category = new Category();
+        BeanUtils.copyProperties(categoryDTO, category);
+        category = categoryRepository.save(category);
+        return new CategoryDTO(category);
+    }
+
+    @Transactional
+    public CategoryDTO update(Long id, CategoryDTO categoryDTO) {
+        try{
+            Category category = categoryRepository.getOne(id);
+            category.setName(categoryDTO.getName());
+            category = categoryRepository.save(category);
+            return new CategoryDTO(category);
+        }catch (EntityNotFoundException e){
+            throw new ResourceNotFoundException("Id not found " + id);
+        }
+
+    }
 }
