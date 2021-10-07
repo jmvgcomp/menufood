@@ -1,4 +1,4 @@
-INSERT INTO category (name) VALUES ('Brasileira');
-INSERT INTO category (name) VALUES ('Lanches');
-INSERT INTO category (name) VALUES ('Doces');
-INSERT INTO category (name) VALUES ('Pizza');
+INSERT INTO category (name, created_At) VALUES ('Brasileira', NOW());
+INSERT INTO category (name, created_At) VALUES ('Lanches', NOW());
+INSERT INTO category (name, created_At) VALUES ('Doces', NOW());
+INSERT INTO category (name, created_At) VALUES ('Pizza', NOW());
