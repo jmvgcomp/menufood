@@ -49,7 +49,7 @@ public class CategoryService {
     public CategoryDTO update(Long id, CategoryDTO categoryDTO) {
         try{
             Category category = categoryRepository.getOne(id);
-            category.setName(categoryDTO.getName());
+            BeanUtils.copyProperties(categoryDTO, category, "id");
             category = categoryRepository.save(category);
             return new CategoryDTO(category);
         }catch (EntityNotFoundException e){

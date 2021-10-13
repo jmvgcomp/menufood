@@ -20,6 +20,7 @@ public class CategoryDTO {
         this.name = category.getName();
     }
 
+
     public Long getId() {
         return id;
     }
